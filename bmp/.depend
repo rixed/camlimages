@@ -1,0 +1,7 @@
+bmp.cmo: ../corelib/images.cmi ../corelib/index8.cmi ../corelib/rgb24.cmi \
+    bmp.cmi 
+bmp.cmx: ../corelib/images.cmx ../corelib/index8.cmx ../corelib/rgb24.cmx \
+    bmp.cmi 
+oBmp.cmo: bmp.cmi ../corelib/oImages.cmi 
+oBmp.cmx: bmp.cmx ../corelib/oImages.cmx 
+bmp.cmi: ../corelib/images.cmi 

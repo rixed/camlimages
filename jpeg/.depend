@@ -1,0 +1,7 @@
+jpeg.cmo: ../corelib/geometry.cmo ../corelib/images.cmi ../corelib/rgb24.cmi \
+    jpeg.cmi 
+jpeg.cmx: ../corelib/geometry.cmx ../corelib/images.cmx ../corelib/rgb24.cmx \
+    jpeg.cmi 
+oJpeg.cmo: jpeg.cmi ../corelib/oImages.cmi 
+oJpeg.cmx: jpeg.cmx ../corelib/oImages.cmx 
+jpeg.cmi: ../corelib/geometry.cmo ../corelib/images.cmi 

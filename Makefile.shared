@@ -1,0 +1,99 @@
+#*********************************************************************#
+#                                                                     #
+#                          Caml Images                                #
+#                                                                     #
+#            François Pessaux, projet Cristal, INRIA Rocquencourt     #
+#            Pierre Weis, projet Cristal, INRIA Rocquencourt          #
+#            Jun Furuse, projet Cristal, INRIA Rocquencourt           #
+#                                                                     #
+#  Copyright 1999-2004,                                               #
+#  Institut National de Recherche en Informatique et en Automatique.  #
+#  Distributed only by permission.                                    #
+#                                                                     #
+#*********************************************************************#
+
+#(* $Id: Makefile.shared,v 1.11 2004/10/02 14:20:09 weis Exp $ *)
+
+ifeq ($(LDFLAGS),)
+CCLIB=
+else
+CCLIB=$(addprefix -ccopt , $(LDFLAGS))
+endif
+
+$(CLIB) $(CDLL): $(COBJS)
+	$(CAMLMKLIB) -oc $(LIBNAME) $(LDFLAGS) $(COBJS) $(EXTCLIB)
+
+$(CMA): $(CLIB) $(MLOBJS)
+	  if test "X$(CLIB)" = "X"; then \
+	    $(CAMLC) -a -linkall -o $(LIBNAME).cma \
+		  $(EXTMLLIB) $(MLOBJS) $(CCLIB) $(EXTCLIB); \
+	  else \
+	    $(CAMLMKLIB) -linkall -o $(LIBNAME) \
+		  $(EXTMLLIB) $(MLOBJS) $(LDFLAGS) $(EXTCLIB); \
+	  fi
+
+$(CMXA): $(CLIB) $(MLOBJS:.cmo=.cmx)
+	  if test "X$(CLIB)" = "X"; then \
+	    $(CAMLOPT) -a -linkall -o $(LIBNAME).cmxa \
+	      $(EXTMLLIB:.cma=.cmxa) $(MLOBJS:.cmo=.cmx) $(CCLIB) $(EXTCLIB); \
+	  else \
+	    $(CAMLMKLIB) -linkall -o $(LIBNAME) \
+	      $(EXTMLLIB:.cma=.cmxa) $(MLOBJS:.cmo=.cmx) $(CCLIB) $(EXTCLIB); \
+	  fi
+
+clean::
+	rm -f *.cm[iox] *.o *.cma *.cmxa *.a *.so *~
+
+install:: all
+	- mkdir -p $(LIBDIR)
+	- cp -p *.mli *.cm[iox] *.o *.cma *.cmxa *.a *.so $(LIBDIR)
+
+#######
+
+.SUFFIXES:
+.SUFFIXES: .ml .mli .cmo .cmi .cmx .mll .mly .c .o
+
+.ml.cmo:
+	$(CAMLC) $(COMPFLAGS) -c $<
+
+.mli.cmi:
+	$(CAMLC) $(COMPFLAGS) -c $<
+
+.ml.cmx:
+	$(CAMLOPT) $(COMPFLAGS) -c $<
+
+.mll.cmo:
+	$(CAMLLEX) $<
+	$(CAMLC) $(COMPFLAGS) -c $*.ml
+
+.mll.cmx:
+	$(CAMLLEX) $<
+	$(CAMLOPT) $(COMPFLAGS) -c $*.ml
+
+.mly.cmo:
+	$(CAMLYACC) $<
+	$(CAMLC) $(COMPFLAGS) -c $*.mli
+	$(CAMLC) $(COMPFLAGS) -c $*.ml
+
+.mly.cmx:
+	$(CAMLYACC) $<
+	$(CAMLOPT) $(COMPFLAGS) -c $*.mli
+	$(CAMLOPT) $(COMPFLAGS) -c $*.ml
+
+.mly.cmi:
+	$(CAMLYACC) $<
+	$(CAMLC) $(COMPFLAGS) -c $*.mli
+
+.mll.ml:
+	$(CAMLLEX) $<
+
+.mly.ml:
+	$(CAMLYACC) $<
+
+.c.o: ../config.h
+	$(CAMLC) -ccopt "-I.. $(CFLAGS)" -c $< 
+
+depend:
+	$(CAMLDEP) $(addprefix -I ../, $(BUILDDIRS)) *.ml *.mli > .depend
+
+include .depend

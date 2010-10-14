@@ -1,0 +1,33 @@
+1.01
+	* fix for O'Caml 3.00 + lablgtk 1.00
+	* bitmap cache files finalization is now standard.
+	* bug fixes
+
+1.02
+	* added CMYK (Cyan Magenta Yellow and blacK) color space 
+	  (even though we have no trivial good color conversion 
+	  between CMYK and RGB)
+	* added RGBA (RGB with the Alpha channel) and CMYK images
+	* Colorhist
+	* Unit
+	* Geometry
+
+	* (Jpeg now supports CMYK image reading and writing)
+	* Postscript
+
+1.03
+	* Image.save takes the image format now as an option.
+
+2.00
+	* O'Caml 3.03 dll support. (This and later versions of camlimages
+	  will not  work with the older O'Camls.
+	* Better support for giflib library
+
+2.01
+	* bug fix at load_Glyph at freetype1/ftintf.c
+
+2.11
+        * bug fix release
+
+2.12
+        * O'Caml 3.07 port. Added support for lablgtk2.

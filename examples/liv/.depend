@@ -1,0 +1,30 @@
+cache.cmo: cache.cmi 
+cache.cmx: cache.cmi 
+display.cmo: cache.cmi enhance.cmo gui.cmo livmisc.cmo tout.cmo 
+display.cmx: cache.cmx enhance.cmx gui.cmx livmisc.cmx tout.cmx 
+icon.cmo: gui.cmo iconcap.cmo livshtype.cmi pathfind.cmo 
+icon.cmx: gui.cmx iconcap.cmx livshtype.cmx pathfind.cmx 
+iconcap.cmo: livmisc.cmo pathfind.cmo 
+iconcap.cmx: livmisc.cmx pathfind.cmx 
+jWidget.cmo: gui.cmo 
+jWidget.cmx: gui.cmx 
+liv-org.cmo: cache.cmi display.cmo gui.cmo livmisc.cmo livsh.cmo \
+    livshtype.cmi pathfind.cmo scandir.cmo tout.cmo 
+liv-org.cmx: cache.cmx display.cmx gui.cmx livmisc.cmx livsh.cmx \
+    livshtype.cmx pathfind.cmx scandir.cmx tout.cmx 
+liv.cmo: cache.cmi display.cmo gui.cmo livmisc.cmo livsh.cmo livshtype.cmi \
+    pathfind.cmo scandir.cmo tout.cmo 
+liv.cmx: cache.cmx display.cmx gui.cmx livmisc.cmx livsh.cmx livshtype.cmx \
+    pathfind.cmx scandir.cmx tout.cmx 
+livsh.cmo: deficon.cmo gui.cmo icon.cmo jWidget.cmo livmisc.cmo livshtype.cmi \
+    mylazy.cmi pathfind.cmo seq.cmo 
+livsh.cmx: deficon.cmx gui.cmx icon.cmx jWidget.cmx livmisc.cmx livshtype.cmx \
+    mylazy.cmx pathfind.cmx seq.cmx 
+livshtype.cmo: livmisc.cmo livshtype.cmi 
+livshtype.cmx: livmisc.cmx livshtype.cmi 
+mylazy.cmo: mylazy.cmi 
+mylazy.cmx: mylazy.cmi 
+tout.cmo: livmisc.cmo 
+tout.cmx: livmisc.cmx 
+viewer.cmo: gui.cmo 
+viewer.cmx: gui.cmx 

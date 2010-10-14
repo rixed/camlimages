@@ -1,0 +1,7 @@
+oXpm.cmo: ../corelib/oImages.cmi xpm.cmi 
+oXpm.cmx: ../corelib/oImages.cmx xpm.cmx 
+xpm.cmo: ../corelib/color.cmi ../corelib/images.cmi ../corelib/index16.cmi \
+    ../corelib/index8.cmi xpm.cmi 
+xpm.cmx: ../corelib/color.cmx ../corelib/images.cmx ../corelib/index16.cmx \
+    ../corelib/index8.cmx xpm.cmi 
+xpm.cmi: ../corelib/images.cmi 

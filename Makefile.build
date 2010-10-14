@@ -1,0 +1,27 @@
+#*********************************************************************#
+#                                                                     #
+#                          Caml Images                                #
+#                                                                     #
+#            François Pessaux, projet Cristal, INRIA Rocquencourt     #
+#            Pierre Weis, projet Cristal, INRIA Rocquencourt          #
+#            Jun Furuse, projet Cristal, INRIA Rocquencourt           #
+#                                                                     #
+#  Copyright 1999-2004,                                               #
+#  Institut National de Recherche en Informatique et en Automatique.  #
+#  Distributed only by permission.                                    #
+#                                                                     #
+#*********************************************************************#
+
+#(* $Id: Makefile.build.in,v 1.4 2004/09/24 08:26:59 weis Exp $ *)
+
+COREDIR=corelib
+
+LABLGTKIMGDIR=
+LABLGTK2IMGDIR=lablgtk2
+
+# lablgtk and lablgtk2 are out of LIBRARYDIRS, since they share some
+# module names.
+
+LIBRARYDIRS=ppm bmp xvthumb jpeg tiff gif png xpm ps graphics freetype
+
+BUILDDIRS=$(COREDIR) $(LIBRARYDIRS) $(LABLGTKIMGDIR) $(LABLGTK2IMGDIR)

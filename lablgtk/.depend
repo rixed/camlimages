@@ -1,0 +1,12 @@
+oXimage.cmo: ../corelib/bitmap.cmi ../corelib/images.cmi \
+    ../corelib/oImages.cmi ximage.cmi oXimage.cmi 
+oXimage.cmx: ../corelib/bitmap.cmx ../corelib/images.cmx \
+    ../corelib/oImages.cmx ximage.cmx oXimage.cmi 
+ximage.cmo: ../corelib/images.cmi ../corelib/index16.cmi \
+    ../corelib/index8.cmi ../corelib/region.cmi ../corelib/rgb24.cmi \
+    ../corelib/rgba32.cmi ximage.cmi 
+ximage.cmx: ../corelib/images.cmx ../corelib/index16.cmx \
+    ../corelib/index8.cmx ../corelib/region.cmx ../corelib/rgb24.cmx \
+    ../corelib/rgba32.cmx ximage.cmi 
+oXimage.cmi: ../corelib/oImages.cmi ximage.cmi 
+ximage.cmi: ../corelib/images.cmi 

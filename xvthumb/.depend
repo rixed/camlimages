@@ -1,0 +1,12 @@
+oXvthumb.cmo: ../corelib/images.cmi ../corelib/oImages.cmi xvthumb.cmi \
+    oXvthumb.cmi 
+oXvthumb.cmx: ../corelib/images.cmx ../corelib/oImages.cmx xvthumb.cmx \
+    oXvthumb.cmi 
+xvthumb.cmo: ../corelib/images.cmi ../corelib/index16.cmi \
+    ../corelib/index8.cmi ../corelib/mstring.cmi ../corelib/rgb24.cmi \
+    xvthumb.cmi 
+xvthumb.cmx: ../corelib/images.cmx ../corelib/index16.cmx \
+    ../corelib/index8.cmx ../corelib/mstring.cmx ../corelib/rgb24.cmx \
+    xvthumb.cmi 
+oXvthumb.cmi: ../corelib/oImages.cmi 
+xvthumb.cmi: ../corelib/images.cmi ../corelib/index8.cmi 

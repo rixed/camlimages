@@ -1,0 +1,15 @@
+charmapids.cmo: freetype.cmi 
+charmapids.cmx: freetype.cmx 
+freetype.cmo: ftlow.cmi freetype.cmi 
+freetype.cmx: ftlow.cmx freetype.cmi 
+ftlow.cmo: ftlow.cmi 
+ftlow.cmx: ftlow.cmi 
+fttext.cmo: freetype.cmi ../corelib/images.cmi jis_unicode.cmi fttext.cmi 
+fttext.cmx: freetype.cmx ../corelib/images.cmx jis_unicode.cmx fttext.cmi 
+jis_unicode.cmo: jis_table.cmo jis_unicode.cmi 
+jis_unicode.cmx: jis_table.cmx jis_unicode.cmi 
+oFreetype.cmo: freetype.cmi fttext.cmi ../corelib/images.cmi \
+    ../corelib/oImages.cmi 
+oFreetype.cmx: freetype.cmx fttext.cmx ../corelib/images.cmx \
+    ../corelib/oImages.cmx 
+fttext.cmi: ../corelib/color.cmi freetype.cmi ../corelib/images.cmi 

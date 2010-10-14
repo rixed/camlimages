@@ -1,0 +1,17 @@
+charmapids.cmo: freetype.cmi 
+charmapids.cmx: freetype.cmx 
+freetype.cmo: ftlow.cmi freetype.cmi 
+freetype.cmx: ftlow.cmx freetype.cmi 
+freetypetest.cmo: freetype.cmi fttext.cmi 
+freetypetest.cmx: freetype.cmx fttext.cmx 
+ftlow.cmo: ftlow.cmi 
+ftlow.cmx: ftlow.cmi 
+fttext.cmo: freetype.cmi jis_unicode.cmi fttext.cmi 
+fttext.cmx: freetype.cmx jis_unicode.cmx fttext.cmi 
+japanese.cmo: freetype.cmi fttext.cmi 
+japanese.cmx: freetype.cmx fttext.cmx 
+jis_unicode.cmo: jis_table.cmo jis_unicode.cmi 
+jis_unicode.cmx: jis_table.cmx jis_unicode.cmi 
+oFreetype.cmo: freetype.cmi 
+oFreetype.cmx: freetype.cmx 
+fttext.cmi: freetype.cmi 

@@ -1,0 +1,150 @@
+../corelib/bitmap.cmo: camlimages.cmo region.cmi tmpfile.cmi \
+    ../corelib/bitmap.cmi 
+../corelib/bitmap.cmx: camlimages.cmx region.cmx tmpfile.cmx \
+    ../corelib/bitmap.cmi 
+../corelib/blend.cmo: color.cmi ../corelib/blend.cmi 
+../corelib/blend.cmx: color.cmx ../corelib/blend.cmi 
+../corelib/cmyk32.cmo: bitmap.cmi color.cmi info.cmi region.cmi \
+    ../corelib/cmyk32.cmi 
+../corelib/cmyk32.cmx: bitmap.cmx color.cmx info.cmi region.cmx \
+    ../corelib/cmyk32.cmi 
+../corelib/color.cmo: camlimages.cmo mstring.cmi ../corelib/color.cmi 
+../corelib/color.cmx: camlimages.cmx mstring.cmx ../corelib/color.cmi 
+../corelib/colorhist.cmo: color.cmi oImage.cmi 
+../corelib/colorhist.cmx: color.cmx oImage.cmx 
+../corelib/image.cmo: cmyk32.cmi color.cmi index16.cmi index8.cmi info.cmi \
+    region.cmi rgb24.cmi rgba32.cmi ../corelib/image.cmi 
+../corelib/image.cmx: cmyk32.cmx color.cmx index16.cmx index8.cmx info.cmi \
+    region.cmx rgb24.cmx rgba32.cmx ../corelib/image.cmi 
+../corelib/index16.cmo: bitmap.cmi color.cmi info.cmi region.cmi rgb24.cmi \
+    rgba32.cmi ../corelib/index16.cmi 
+../corelib/index16.cmx: bitmap.cmx color.cmx info.cmi region.cmx rgb24.cmx \
+    rgba32.cmx ../corelib/index16.cmi 
+../corelib/index8.cmo: bitmap.cmi color.cmi info.cmi region.cmi rgb24.cmi \
+    rgba32.cmi ../corelib/index8.cmi 
+../corelib/index8.cmx: bitmap.cmx color.cmx info.cmi region.cmx rgb24.cmx \
+    rgba32.cmx ../corelib/index8.cmi 
+../corelib/mstring.cmo: ../corelib/mstring.cmi 
+../corelib/mstring.cmx: ../corelib/mstring.cmi 
+../corelib/oColor.cmo: color.cmi ../corelib/oColor.cmi 
+../corelib/oColor.cmx: color.cmx ../corelib/oColor.cmi 
+../corelib/oImage.cmo: bitmap.cmi cmyk32.cmi color.cmi image.cmi index16.cmi \
+    index8.cmi oColor.cmi rgb24.cmi rgba32.cmi ../corelib/oImage.cmi 
+../corelib/oImage.cmx: bitmap.cmx cmyk32.cmx color.cmx image.cmx index16.cmx \
+    index8.cmx oColor.cmx rgb24.cmx rgba32.cmx ../corelib/oImage.cmi 
+../corelib/reduce.cmo: color.cmi index8.cmi rgb24.cmi ../corelib/reduce.cmi 
+../corelib/reduce.cmx: color.cmx index8.cmx rgb24.cmx ../corelib/reduce.cmi 
+../corelib/region.cmo: ../corelib/region.cmi 
+../corelib/region.cmx: ../corelib/region.cmi 
+../corelib/rgb24.cmo: bitmap.cmi color.cmi info.cmi region.cmi rgba32.cmi \
+    ../corelib/rgb24.cmi 
+../corelib/rgb24.cmx: bitmap.cmx color.cmx info.cmi region.cmx rgba32.cmx \
+    ../corelib/rgb24.cmi 
+../corelib/rgba32.cmo: bitmap.cmi color.cmi info.cmi region.cmi \
+    ../corelib/rgba32.cmi 
+../corelib/rgba32.cmx: bitmap.cmx color.cmx info.cmi region.cmx \
+    ../corelib/rgba32.cmi 
+../corelib/tmpfile.cmo: ../corelib/tmpfile.cmi 
+../corelib/tmpfile.cmx: ../corelib/tmpfile.cmi 
+../ppm/oPpm.cmo: oImage.cmi ../ppm/ppm.cmi 
+../ppm/oPpm.cmx: oImage.cmx ../ppm/ppm.cmx 
+../ppm/ppm.cmo: color.cmi image.cmi index8.cmi rgb24.cmi ../ppm/ppm.cmi 
+../ppm/ppm.cmx: color.cmx image.cmx index8.cmx rgb24.cmx ../ppm/ppm.cmi 
+../jpeg/jpeg.cmo: bitmap.cmi geometry.cmo image.cmi rgb24.cmi \
+    ../jpeg/jpeg.cmi 
+../jpeg/jpeg.cmx: bitmap.cmx geometry.cmx image.cmx rgb24.cmx \
+    ../jpeg/jpeg.cmi 
+../jpeg/oJpeg.cmo: ../jpeg/jpeg.cmi oImage.cmi 
+../jpeg/oJpeg.cmx: ../jpeg/jpeg.cmx oImage.cmx 
+../tiff/oTiff.cmo: oImage.cmi ../tiff/tiff.cmi 
+../tiff/oTiff.cmx: oImage.cmx ../tiff/tiff.cmx 
+../tiff/tiff.cmo: bitmap.cmi cmyk32.cmi image.cmi rgb24.cmi ../tiff/tiff.cmi 
+../tiff/tiff.cmx: bitmap.cmx cmyk32.cmx image.cmx rgb24.cmx ../tiff/tiff.cmi 
+../bmp/bmp.cmo: bitmap.cmi image.cmi index8.cmi rgb24.cmi ../bmp/bmp.cmi 
+../bmp/bmp.cmx: bitmap.cmx image.cmx index8.cmx rgb24.cmx ../bmp/bmp.cmi 
+../bmp/oBmp.cmo: ../bmp/bmp.cmi oImage.cmi 
+../bmp/oBmp.cmx: ../bmp/bmp.cmx oImage.cmx 
+../gif/gif.cmo: bitmap.cmi color.cmi image.cmi index8.cmi ../gif/gif.cmi 
+../gif/gif.cmx: bitmap.cmx color.cmx image.cmx index8.cmx ../gif/gif.cmi 
+../gif/oGif.cmo: ../gif/gif.cmi image.cmi oImage.cmi 
+../gif/oGif.cmx: ../gif/gif.cmx image.cmx oImage.cmx 
+../png/oPng.cmo: oImage.cmi ../png/png.cmi 
+../png/oPng.cmx: oImage.cmx ../png/png.cmx 
+../png/png.cmo: bitmap.cmi image.cmi index16.cmi index8.cmi rgb24.cmi \
+    ../png/png.cmi 
+../png/png.cmx: bitmap.cmx image.cmx index16.cmx index8.cmx rgb24.cmx \
+    ../png/png.cmi 
+../xpm/oXpm.cmo: oImage.cmi ../xpm/xpm.cmi 
+../xpm/oXpm.cmx: oImage.cmx ../xpm/xpm.cmx 
+../xpm/xpm.cmo: color.cmi image.cmi index16.cmi index8.cmi ../xpm/xpm.cmi 
+../xpm/xpm.cmx: color.cmx image.cmx index16.cmx index8.cmx ../xpm/xpm.cmi 
+../xvthumb/oXvthumb.cmo: image.cmi oImage.cmi ../xvthumb/xvthumb.cmi \
+    ../xvthumb/oXvthumb.cmi 
+../xvthumb/oXvthumb.cmx: image.cmx oImage.cmx ../xvthumb/xvthumb.cmx \
+    ../xvthumb/oXvthumb.cmi 
+../xvthumb/xvthumb.cmo: image.cmi index16.cmi index8.cmi mstring.cmi \
+    rgb24.cmi ../xvthumb/xvthumb.cmi 
+../xvthumb/xvthumb.cmx: image.cmx index16.cmx index8.cmx mstring.cmx \
+    rgb24.cmx ../xvthumb/xvthumb.cmi 
+../ps/ps.cmo: bitmap.cmi camlimages.cmo image.cmi mstring.cmi ../ppm/ppm.cmi \
+    rgb24.cmi tmpfile.cmi ../ps/ps.cmi 
+../ps/ps.cmx: bitmap.cmx camlimages.cmx image.cmx mstring.cmx ../ppm/ppm.cmx \
+    rgb24.cmx tmpfile.cmx ../ps/ps.cmi 
+../graphics/graphic_image.cmo: image.cmi index16.cmi index8.cmi rgb24.cmi \
+    ../graphics/graphic_image.cmi 
+../graphics/graphic_image.cmx: image.cmx index16.cmx index8.cmx rgb24.cmx \
+    ../graphics/graphic_image.cmi 
+../graphics/oGraphic.cmo: ../graphics/graphic_image.cmi image.cmi oImage.cmi 
+../graphics/oGraphic.cmx: ../graphics/graphic_image.cmx image.cmx oImage.cmx 
+../freetype/charmapids.cmo: ../freetype/freetype.cmi 
+../freetype/charmapids.cmx: ../freetype/freetype.cmx 
+../freetype/freetype.cmo: ../freetype/ftlow.cmi ../freetype/freetype.cmi 
+../freetype/freetype.cmx: ../freetype/ftlow.cmx ../freetype/freetype.cmi 
+../freetype/ftlow.cmo: ../freetype/ftlow.cmi 
+../freetype/ftlow.cmx: ../freetype/ftlow.cmi 
+../freetype/fttext.cmo: ../freetype/freetype.cmi image.cmi \
+    ../freetype/jis_unicode.cmi ../freetype/fttext.cmi 
+../freetype/fttext.cmx: ../freetype/freetype.cmx image.cmx \
+    ../freetype/jis_unicode.cmx ../freetype/fttext.cmi 
+../freetype/jis_unicode.cmo: ../freetype/jis_table.cmo \
+    ../freetype/jis_unicode.cmi 
+../freetype/jis_unicode.cmx: ../freetype/jis_table.cmx \
+    ../freetype/jis_unicode.cmi 
+../freetype/oFreetype.cmo: ../freetype/freetype.cmi ../freetype/fttext.cmi \
+    image.cmi oImage.cmi 
+../freetype/oFreetype.cmx: ../freetype/freetype.cmx ../freetype/fttext.cmx \
+    image.cmx oImage.cmx 
+../lablgtk/oXimage.cmo: bitmap.cmi image.cmi oImage.cmi ../lablgtk/ximage.cmi \
+    ../lablgtk/oXimage.cmi 
+../lablgtk/oXimage.cmx: bitmap.cmx image.cmx oImage.cmx ../lablgtk/ximage.cmx \
+    ../lablgtk/oXimage.cmi 
+../lablgtk/ximage.cmo: image.cmi index16.cmi index8.cmi region.cmi rgb24.cmi \
+    ../lablgtk/ximage.cmi 
+../lablgtk/ximage.cmx: image.cmx index16.cmx index8.cmx region.cmx rgb24.cmx \
+    ../lablgtk/ximage.cmi 
+../corelib/blend.cmi: color.cmi 
+../corelib/cmyk32.cmi: bitmap.cmi color.cmi info.cmi 
+../corelib/image.cmi: cmyk32.cmi color.cmi index16.cmi index8.cmi info.cmi \
+    rgb24.cmi rgba32.cmi 
+../corelib/index16.cmi: bitmap.cmi color.cmi info.cmi rgb24.cmi rgba32.cmi 
+../corelib/index8.cmi: bitmap.cmi color.cmi info.cmi rgb24.cmi rgba32.cmi 
+../corelib/oColor.cmi: color.cmi 
+../corelib/oImage.cmi: cmyk32.cmi color.cmi image.cmi index16.cmi index8.cmi \
+    oColor.cmi rgb24.cmi rgba32.cmi 
+../corelib/reduce.cmi: color.cmi index8.cmi rgb24.cmi 
+../corelib/rgb24.cmi: bitmap.cmi color.cmi info.cmi rgba32.cmi 
+../corelib/rgba32.cmi: bitmap.cmi color.cmi info.cmi 
+../ppm/ppm.cmi: image.cmi index8.cmi rgb24.cmi 
+../jpeg/jpeg.cmi: geometry.cmo image.cmi 
+../tiff/tiff.cmi: image.cmi 
+../bmp/bmp.cmi: image.cmi 
+../gif/gif.cmi: color.cmi image.cmi index8.cmi 
+../png/png.cmi: image.cmi 
+../xpm/xpm.cmi: image.cmi 
+../xvthumb/oXvthumb.cmi: oImage.cmi 
+../xvthumb/xvthumb.cmi: image.cmi index8.cmi 
+../ps/ps.cmi: image.cmi 
+../graphics/graphic_image.cmi: image.cmi rgb24.cmi 
+../freetype/fttext.cmi: color.cmi ../freetype/freetype.cmi image.cmi 
+../lablgtk/oXimage.cmi: oImage.cmi ../lablgtk/ximage.cmi 
+../lablgtk/ximage.cmi: image.cmi 

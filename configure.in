@@ -1,0 +1,499 @@
+dnl Process this file with autoconf to produce a configure script.
+
+AC_INIT(corelib/camlimages.ml.in)
+
+AC_CONFIG_HEADER(config.h)
+
+dnl try to find your compiler package
+AC_MSG_CHECKING(your compiler package)
+
+CAMLIMAGES_VERSION="2.2.0"
+
+CAML=ocaml
+NOLABEL=""
+WITHLABEL=-labels
+DOTOPT=""
+
+CAMLDIR=`"$CAML"c -where`
+CAMLVERSION0=`"$CAML"c -v | grep "compiler" | sed 's/.* version //'`
+
+CAMLVERSION=`echo $CAMLVERSION0 | sed 's/ .*$//'`
+
+AC_MSG_RESULT(version $CAMLVERSION at $CAMLDIR)
+
+if test `expr $CAMLVERSION \< 3.06` = "1" 
+then
+  AC_MSG_ERROR(You need Objective Caml compiler version at least 3.06)
+fi
+
+AC_ARG_ENABLE(dotopt, [  --disable-dotopt        disable use of .opt compilers],
+  use_dotopt="$enableval", use_dotopt=yes)
+
+AC_MSG_CHECKING("whether to use ${CAML}c.opt")
+if test "$use_dotopt" = yes; then
+  CAMLVERSIONOPT=`"$CAML"c.opt -v | grep "compiler" | \
+                  sed 's/.* version //' 2> /dev/null`
+  if test "$CAMLVERSION0" = "$CAMLVERSIONOPT"; then
+    DOTOPT=".opt"
+    AC_MSG_RESULT(yes)
+  else
+    AC_MSG_RESULT(no)
+  fi
+else
+  AC_MSG_RESULT(disabled)
+fi
+
+
+dnl Installation directory override
+
+AC_ARG_WITH(camldir, [  --with-camldir=dir 	  override installation directory],
+  if test "$withval" != "no" ; then  
+	CAMLDIR=$withval
+	AC_MSG_RESULT(override CAMLDIR=$CAMLDIR)
+  fi)
+
+dnl Checks for programs -------------------------------------------------------
+AC_PROG_CC
+AC_PROG_RANLIB
+
+dnl Checks for header files. --------------------------------------------------
+AC_CHECK_HEADERS(fcntl.h sys/time.h)
+
+dnl Checks for typedefs, structures, and compiler characteristics. ------------
+AC_TYPE_SIZE_T
+
+dnl Checks for library functions. ---------------------------------------------
+AC_HEADER_STDC
+AC_TYPE_SIGNAL
+
+dnl Checks word size ----------------------------------------------------------
+AC_CHECK_SIZEOF(long)
+WORD_SIZE=$ac_cv_sizeof_long
+
+dnl X libraries ---------------------------------------------------------------
+AC_PATH_XTRA
+WITH_X="$X_LIBS $X_PRE_LIBS -lX11 $X_EXTRA_LIBS"
+
+dnl Checking -lm --------------------------------------------------------------
+AC_CHECK_LIB(m, floor)
+
+dnl pure version (= no external libraries) ------------------------------------
+
+AC_MSG_CHECKING(external libraries)
+NOEXTERNAL="false"
+AC_ARG_WITH(external-libraries, [  --without-external-libraries
+			  compile without any external libraries],
+  if test "$withval" = "no" ; then  
+	NOEXTERNAL="true"
+  fi)
+if test "$NOEXTERNAL" = "false" ; then
+	AC_MSG_RESULT(enabled)
+else
+	AC_MSG_RESULT(disabled (are you sure?))
+fi
+
+dnl lablgtk library -----------------------------------------------------------
+
+LABLGTKDIR_MESSAGE="Not found"
+SUPPORT_LABLGTK="false"
+
+dnl used for Makefile.build
+LABLGTKIMGDIR=""
+
+AC_MSG_CHECKING(checking lablgtk)
+
+if test "$NOEXTERNAL" = "true"; then
+  AC_MSG_RESULT(disabled)
+else
+  if test -d "$CAMLDIR/lablgtk"; then
+    LABLGTKDIR="$CAMLDIR/lablgtk"
+  else
+    # Just to be able to compile examples in case
+    LABLGTKDIR="."
+  fi
+  
+  AC_ARG_WITH(lablgtk, [  --with-lablgtk=dir      specify lablgtk library directory],
+    if test "$withval" != "no" ; then  
+  	  if test -f $withval/gtk.ml; then
+  	    LABLGTKDIR="$withval"
+  	  else
+            # Just to be able to compile examples in case
+  	    LABLGTKDIR="."
+  	    echo "**************** ERROR ******************"
+  	    echo "gtk.ml is not found in the directory \"$withval\", which you specified with --with-lablgtk option."
+  	    echo "*****************************************"
+  	  fi
+    fi)
+  
+  if test "X$LABLGTKDIR" = "X."; then
+    LABLGTKDIR_MESSAGE="Not found"
+    AC_MSG_RESULT($LABLGTKDIR_MESSAGE)
+    SUPPORT_LABLGTK="false"
+  else
+    LABLGTKDIR_MESSAGE="found at $LABLGTKDIR"
+    AC_MSG_RESULT($LABLGTKDIR_MESSAGE)
+    AC_MSG_CHECKING(the version of lablgtk)
+    grep image: $LABLGTKDIR/gdk.mli > /dev/null
+    GDK_MLI_NEW=$?
+    if test -f $LABLGTKDIR/gBin.mli -a "$GDK_MLI_NEW" = "1"; then
+      SUPPORT_LABLGTK="true"
+      SUPPORTED="$SUPPORTED lablgtk"
+      LABLGTKIMGDIR="lablgtk"
+      AC_MSG_RESULT(ok)
+    else
+      LABLGTKDIR=""
+      SUPPORT_LABLGTK="false"
+      LABLGTKDIR_MESSAGE="found, but too old"
+      echo "**************** ERROR ******************"
+      echo "Your lablgtk seems to be old. Install the latest/CVS version."
+      echo "*****************************************"
+    fi 
+  fi
+fi
+
+if test "$SUPPORT_LABLGTK" = "true"; then
+  AC_PATH_PROG(PATH_GDK_PIXBUF_CONFIG, gdk-pixbuf-config, "nope")
+  if test "X$PATH_GDK_PIXBUF_CONFIG" != "Xnope"; then
+    AC_CHECK_FILE( $LABLGTKDIR/gdkPixbuf.cmi,
+	SUPPORT_GDKPIXBUF="true",
+	SUPPORT_GDKPIXBUF="false")	
+  fi
+fi
+AC_MSG_CHECKING(gdkpixbuf image support)
+if test "$SUPPORT_GDKPIXBUF" = "true"; then
+  AC_MSG_RESULT(ok)
+  SUPPORTED="$SUPPORTED gdkpixbuf"
+else
+  AC_MSG_RESULT(no)
+fi
+
+dnl lablgtk2 -----------------------------------------------------------------
+
+LABLGTK2DIR_MESSAGE="Not found"
+SUPPORT_LABLGTK2="false"
+
+dnl used for Makefile.build
+LABLGTK2IMGDIR=""
+
+AC_MSG_CHECKING(checking lablgtk2)
+
+if test "$NOEXTERNAL" = "true"; then
+  AC_MSG_RESULT(disabled)
+else
+  if test -d "$CAMLDIR/lablgtk2"; then
+    LABLGTK2DIR="$CAMLDIR/lablgtk2"
+  fi
+  
+  AC_ARG_WITH(lablgtk2, [  --with-lablgtk2=dir      specify lablgtk2 library directory],
+    if test "$withval" != "no" ; then  
+  	  if test -f $withval/gtk.ml; then
+  	    LABLGTK2DIR="$withval"
+  	  else
+  	    LABLGTK2DIR=""
+  	    echo "**************** ERROR ******************"
+  	    echo "gtk.ml is not found in the directory \"$withval\", which you specified with --with-lablgtk2 option."
+  	    echo "*****************************************"
+  	  fi
+    fi)
+  
+  if test "X$LABLGTK2DIR" = "X"; then
+    LABLGTK2DIR_MESSAGE="Not found"
+    AC_MSG_RESULT($LABLGTK2DIR_MESSAGE)
+    SUPPORT_LABLGTK2="false"
+  else
+    LABLGTK2DIR_MESSAGE="found at $LABLGTK2DIR"
+    AC_MSG_RESULT($LABLGTK2DIR_MESSAGE)
+    SUPPORTED="$SUPPORTED lablgtk2"
+    LABLGTK2IMGDIR="lablgtk2"
+  fi
+fi
+
+dnl lablgl library -----------------------------------------------------------
+
+LABLGLDIR_MESSAGE="Not found"
+SUPPORT_LABLGL="false"
+
+dnl used for Makefile.build
+LABLGLDIR=""
+
+AC_MSG_CHECKING(checking lablgl)
+
+if test "$NOEXTERNAL" = "true"; then
+  AC_MSG_RESULT(disabled)
+else
+  if test -d "$CAMLDIR/lablGL"; then
+    LABLGLDIR="$CAMLDIR/lablGL"
+  fi
+  
+  AC_ARG_WITH(lablgl, [  --with-lablgl=dir      specify lablgl library directory],
+    if test "$withval" != "no" ; then  
+  	  if test -f $withval/lablgl.cma; then
+  	    LABLGLDIR="$withval"
+  	  else
+  	    LABLGLDIR=""
+  	    echo "**************** ERROR ******************"
+  	    echo "lablgl.cma is not found in the directory \"$withval\", which you specified with --with-lablgl option."
+  	    echo "*****************************************"
+  	  fi
+    fi)
+  
+  if test "X$LABLGLDIR" = "X"; then
+    LABLGLDIR_MESSAGE="Not found"
+    AC_MSG_RESULT($LABLGLDIR_MESSAGE)
+    SUPPORT_LABLGL="false"
+  else
+    LABLGLDIR_MESSAGE="found at $LABLGLDIR"
+    AC_MSG_RESULT($LABLGLDIR_MESSAGE)
+    SUPPORTED="$SUPPORTED lablgl"
+  fi
+fi
+
+dnl Checks for libraries ------------------------------------------------------
+
+SUPPORTED="$SUPPORTED bmp ppm"
+RGBTXT="not found"
+
+dnl Checking -lungif or -lgif -------------------------------------------------
+
+SUPPORT_GIF="false"
+
+if test "$NOEXTERNAL" = "false" ; then
+  AC_CHECK_LIB(gif, DGifOpenFileName, 
+  	  LIBGIF="-lgif";
+  	  SUPPORT_GIF="true", 
+    AC_CHECK_LIB(ungif, DGifOpenFileName, 
+  	  LIBGIF="-lungif";
+  	  SUPPORT_GIF="true", SUPPORT_GIF="false",
+  	  $WITH_X), $WITH_X)
+  if test $SUPPORT_GIF = "true" ; then
+    AC_DEFINE(HAVE_GIF)
+    SUPPORTED="$SUPPORTED gif"
+  fi
+fi
+
+dnl Checking -lungif/-lgif bug is fixed ---------------------------------------
+
+if test $SUPPORT_GIF = "true" ; then
+  AC_MSG_CHECKING(-lungif/-lgif bug is fixed)
+
+  ORGLDFLAGS=$LDFLAGS
+  LDFLAGS="$LIBGIF $WITH_X"
+  AC_TRY_RUN(
+#include <stdio.h>
+#include <gif_lib.h>
+main()
+{
+  EGifSetGifVersion("89a");
+  return 0;
+}
+, AC_DEFINE(GIFLIB_BUG_FIXED) AC_MSG_RESULT(ok)
+, 
+echo '
+*************************** WARNING *********************************
+Gif file format is supported in Camlimages but your libungif/libgif 
+is buggy. If you have time try to compile it with a gcc option 
+-fwritable-strings. 
+*********************************************************************';
+AC_MSG_RESULT(with bug))
+LDFLAGS=$ORGLDFLAGS
+fi
+
+dnl Checking -lpng ------------------------------------------------------------
+
+SUPPORT_PNG="false"
+if test "$NOEXTERNAL" = "false" ; then
+  AC_CHECK_LIB(png, png_create_read_struct, 
+  	  AC_DEFINE(HAVE_PNG) LIBPNG="-lpng -lz"; SUPPORTED="$SUPPORTED png";
+  	  SUPPORT_PNG="true", SUPPORT_PNG="false", 
+  	  -lz )
+fi
+
+dnl Checking -ljpeg -----------------------------------------------------------
+
+SUPPORT_JPEG="false"
+if test "$NOEXTERNAL" = "false" ; then
+  AC_CHECK_LIB(jpeg, jpeg_read_header, 
+  	  AC_DEFINE(HAVE_JPEG) LIBJPEG="-ljpeg"; SUPPORTED="$SUPPORTED jpeg";
+  	  SUPPORT_JPEG="true", SUPPORT_JPEG="false" )
+fi
+
+dnl Checking -ltiff -----------------------------------------------------------
+
+SUPPORT_TIFF="false"
+if test "$NOEXTERNAL" = "false" ; then
+  AC_CHECK_LIB(tiff, TIFFOpen, 
+  	  AC_DEFINE(HAVE_TIFF) LIBTIFF="-ltiff"; SUPPORTED="$SUPPORTED tiff";
+  	  SUPPORT_TIFF="true", SUPPORT_TIFF="false" )
+fi
+
+dnl Checking rgb.txt
+
+PATH_RGB_TXT="none"
+if test -f "$x_libraries/X11/rgb.txt" ; then
+  PATH_RGB_TXT="$x_libraries/X11/rgb.txt"
+fi
+
+dnl Checking xpm.h -lxpm ------------------------------------------------------
+
+SUPPORT_XPM="false"
+if test "$NOEXTERNAL" = "false" ; then
+  if test "X$x_libraries" = "X"; then 
+    l_x_libraries=""
+  else
+    l_x_libraries="-L$x_libraries"
+  fi
+  AC_CHECK_HEADER(X11/xpm.h,
+  	  AC_CHECK_LIB(Xpm, XpmReadFileToXpmImage, 
+ 		  AC_DEFINE(HAVE_XPM) LIBXPM="$l_x_libraries -lXpm"; 
+  		  SUPPORTED="$SUPPORTED xpm";
+  		  SUPPORT_XPM="true", SUPPORT_XPM="false", 
+  		  $X_CFLAGS $WITH_X ),
+  	  SUPPORT_XPM="false")
+fi
+
+dnl freetype ------------------------------------------------------------------
+
+FORCE_FREETYPE1="false"
+
+AC_ARG_WITH(freetype1, [  --with-freetype1	  create a library with freetype1],
+    if test "$with_freetype1" = "yes"; then 
+	  FORCE_FREETYPE1="true"
+    fi )
+
+dnl Checking Freetype2: -------------------------------------------------------
+
+if test "$NOEXTERNAL" = "false" ; then
+  AC_PATH_PROG(PATH_FREETYPE_CONFIG, freetype-config, "nope")
+  if test "X$PATH_FREETYPE_CONFIG" != "Xnope" -a $FORCE_FREETYPE1 != "true"; then
+    AC_DEFINE(HAVE_FREETYPE)
+    AC_DEFINE(HAVE_FREETYPE2)
+    LIBFREETYPE=`freetype-config --libs`
+    INCLUDE_FREETYPE=`freetype-config --cflags`
+    SUPPORTED="$SUPPORTED freetype(2)"
+    SUPPORT_FREETYPE="true"
+    SUPPORT_FREETYPE2="true"
+  else
+    SUPPORT_FREETYPE2="false"
+  fi
+fi
+ 
+dnl Checking Freetype1 --------------------------------------------------------
+
+if test "$NOEXTERNAL" = "false" -a "X$SUPPORT_FREETYPE" = "X" ; then
+  SUPPORT_FREETYPE="false"
+  AC_CHECK_LIB(
+    ttf,
+    TT_Init_FreeType,
+    [AC_CHECK_HEADER(
+       freetype.h,
+       [AC_DEFINE(HAVE_FREETYPE) LIBFREETYPE="-lttf"; 
+        SUPPORTED="$SUPPORTED freetype(1)";
+        SUPPORT_FREETYPE="true"], 
+       [AC_CHECK_HEADER(
+          /usr/include/freetype/freetype.h,
+          [AC_DEFINE(HAVE_FREETYPE) LIBFREETYPE="-lttf"; 
+           SUPPORTED="$SUPPORTED freetype(1)";
+           SUPPORT_FREETYPE="true";
+           INCLUDE_FREETYPE="-I/usr/include/freetype"], 
+          [AC_CHECK_HEADER(
+             /usr/local/include/freetype.h,
+             [AC_DEFINE(HAVE_FREETYPE) LIBFREETYPE="-lttf"; 
+              SUPPORTED="$SUPPORTED freetype(1)";
+              SUPPORT_FREETYPE="true";
+              INCLUDE_FREETYPE="-I/usr/local/include/"], 
+             [AC_CHECK_HEADER(
+                /usr/local/include/freetype/freetype.h,
+                [AC_DEFINE(HAVE_FREETYPE) LIBFREETYPE="-lttf"; 
+                SUPPORTED="$SUPPORTED freetype(1)";
+                SUPPORT_FREETYPE="true";
+                INCLUDE_FREETYPE="-I/usr/local/include/freetype"], 
+                [SUPPORT_FREETYPE="false"])
+             ])
+          ])
+       ])
+    ])
+fi
+
+if test "X$SUPPORT_FREETYPE" = "X"; then
+  SUPPORT_FREETYPE="false"
+fi
+
+dnl Checking gs ---------------------------------------------------------------
+
+SUPPORT_PS="false"
+
+if test "$NOEXTERNAL" = "false" ; then
+  AC_PATH_PROG(PATH_GS, gs, "nope") 
+  SUPPORT_PS="false"
+  if test "X$PATH_GS" != "Xnope" ; then
+    SUPPORTED="$SUPPORTED ps"
+    SUPPORT_PS="true"
+  fi
+fi
+
+dnl Substitute variables ------------------------------------------------------
+
+AC_SUBST(CAML)
+AC_SUBST(DOTOPT)
+AC_SUBST(NOLABEL)
+AC_SUBST(WITHLABEL)
+AC_SUBST(CAMLDIR)
+AC_SUBST(CAMLVERSION)
+AC_SUBST(CAMLIMAGES_VERSION)
+AC_SUBST(LABLGTKDIR)
+AC_SUBST(LABLGTK2DIR)
+AC_SUBST(LABLGLDIR)
+AC_SUBST(MLFINALIZE)
+
+AC_SUBST(SUPPORTED)
+AC_SUBST(LIBGIF)
+AC_SUBST(LIBBMP)
+AC_SUBST(LIBJPEG)
+AC_SUBST(LIBTIFF)
+AC_SUBST(LIBFREETYPE)
+AC_SUBST(LIBPNG)
+AC_SUBST(LIBXPM)
+AC_SUBST(LIBXVTHUMB)
+AC_SUBST(LIBPPM)
+AC_SUBST(LIBPS)
+
+AC_SUBST(SUPPORT_GIF)
+AC_SUBST(SUPPORT_PNG)
+AC_SUBST(SUPPORT_JPEG)
+AC_SUBST(SUPPORT_TIFF)
+AC_SUBST(SUPPORT_FREETYPE)
+AC_SUBST(SUPPORT_FREETYPE2)
+AC_SUBST(SUPPORT_PS)
+AC_SUBST(SUPPORT_XPM)
+AC_SUBST(SUPPORT_LABLGTK)
+AC_SUBST(SUPPORT_LABLGTK2)
+AC_SUBST(SUPPORT_GDKPIXBUF)
+AC_SUBST(PATH_RGB_TXT)
+AC_SUBST(PATH_GS)
+AC_SUBST(WORD_SIZE)
+AC_SUBST(CFLAGS)
+AC_SUBST(LDFLAGS)
+AC_SUBST(X_CFLAGS)
+AC_SUBST(WITH_X)
+
+AC_SUBST(LABLGTKIMGDIR)
+AC_SUBST(LABLGTK2IMGDIR)
+
+AC_SUBST(INCLUDE_FREETYPE)
+
+AC_OUTPUT(Makefile.config corelib/camlimages.ml Makefile.build)
+
+dnl Creating freetype symlink -------------------------------------------------
+rm -rf freetype
+if test "$SUPPORT_FREETYPE2" = "true"; then
+  ln -s freetype2 freetype
+else
+  ln -s freetype1 freetype
+fi
+
+echo -------------------------------------------------- Configuration finished
+echo Language:            $CAML version $CAMLVERSION
+echo Compilers:           ${CAML}c$DOTOPT and ${CAML}opt$DOTOPT
+echo Installed in:        $CAMLDIR/camlimages 
+echo External libraries:  $SUPPORTED
+echo -------------------------------------------------------------------------

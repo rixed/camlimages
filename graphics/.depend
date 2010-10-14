@@ -1,0 +1,7 @@
+graphic_image.cmo: ../corelib/images.cmi ../corelib/index16.cmi \
+    ../corelib/index8.cmi ../corelib/rgb24.cmi graphic_image.cmi 
+graphic_image.cmx: ../corelib/images.cmx ../corelib/index16.cmx \
+    ../corelib/index8.cmx ../corelib/rgb24.cmx graphic_image.cmi 
+oGraphic.cmo: graphic_image.cmi ../corelib/images.cmi ../corelib/oImages.cmi 
+oGraphic.cmx: graphic_image.cmx ../corelib/images.cmx ../corelib/oImages.cmx 
+graphic_image.cmi: ../corelib/images.cmi ../corelib/rgb24.cmi 

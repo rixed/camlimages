@@ -1,0 +1,3 @@
+#!/bin/sh
+
+customtop -I bmp -I corelib -I freetype -I gif -I graphics -I jpeg -I png -I tiff

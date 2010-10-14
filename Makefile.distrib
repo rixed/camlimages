@@ -1,0 +1,63 @@
+#*********************************************************************#
+#                                                                     #
+#                          Caml Images                                #
+#                                                                     #
+#            Pierre Weis, projet Cristal, INRIA Rocquencourt          #
+#                                                                     #
+#  Copyright 2004 Institut National de Recherche en Informatique et   #
+#  en Automatique.  Distributed only by permission.                   #
+#                                                                     #
+#*********************************************************************#
+
+#(* $Id: Makefile.distrib,v 1.2 2004/10/01 14:28:25 weis Exp $ *)
+
+include Makefile
+
+# Just for $(PACKAGE) maintainers, distribution of the software.
+# Usage:
+# make -f Makefile.distrib distribute
+
+# Need an INSTALL and README file in the main directory.
+
+# Need a doc directory where the documentation has been written,
+# presumably in HTML with an index.html file. This directory is copied
+# onto the WEB site directory of the package, as mentioned in
+# $(WEBSITEDIR). Presumably the doc directory contains 2 files named
+# eng.htm and fra.htm that respectively contain the English and French
+# documentation.
+
+# A tar ball file with the source files is also constructed and moved
+# into the $(FTPDIR) directory.
+
+WEBSITEDIR=/net/pauillac/infosystems/www/$(PACKAGE)
+FTPDIR=/net/pauillac/infosystems/ftp/cristal/caml-light/bazar-ocaml
+
+fake:
+	echo '\n\nThis Makefile is used to distribute the software,\n\
+Read it to understand how to use it!'
+
+distribute:
+	$(MAKE) -f Makefile documentation
+	$(RM) release
+	$(RM) $(WEBSITEDIR)/*
+	mkdir release
+	cd release; cvs co bazar-ocaml/$(PACKAGE); \
+	$(CP) ../doc bazar-ocaml/$(PACKAGE)/; \
+	$(RM) Makefile.distrib; \
+	find . -name '.cvsignore' -print | xargs $(RM); \
+	find . -name 'CVS' -print | xargs $(RM); \
+	$(CP) bazar-ocaml/$(PACKAGE)/README bazar-ocaml/$(PACKAGE)/doc/; \
+	$(CP) bazar-ocaml/$(PACKAGE)/LICENSE bazar-ocaml/$(PACKAGE)/doc/; \
+	$(CP) bazar-ocaml/$(PACKAGE)/INSTALL bazar-ocaml/$(PACKAGE)/doc/; \
+	$(CP) bazar-ocaml/$(PACKAGE)/doc/* $(WEBSITEDIR)/; \
+	ln -s $(WEBSITEDIR)/index.htm $(WEBSITEDIR)/index.html
+	- chgrp -R caml $(WEBSITEDIR)
+	- chmod -R g+w $(WEBSITEDIR)
+	cd release; $(MV) bazar-ocaml/$(PACKAGE) $(PACKAGE)-$(VERSION); \
+	$(RM) $(PACKAGE)-$(VERSION)/tools; \
+	tar zcvf $(PACKAGE)-$(VERSION).tgz $(PACKAGE)-$(VERSION); \
+	$(MV) $(PACKAGE)-$(VERSION).tgz $(FTPDIR); \
+	chgrp caml $(FTPDIR)/$(PACKAGE)-$(VERSION).tgz; \
+	chmod g+w $(FTPDIR)/$(PACKAGE)-$(VERSION).tgz
+	$(RM) release
+

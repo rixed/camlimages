@@ -1,0 +1,85 @@
+#*********************************************************************#
+#                                                                     #
+#                          Caml Images                                #
+#                                                                     #
+#            François Pessaux, projet Cristal, INRIA Rocquencourt     #
+#            Pierre Weis, projet Cristal, INRIA Rocquencourt          #
+#            Jun Furuse, projet Cristal, INRIA Rocquencourt           #
+#                                                                     #
+#  Copyright 1999-2004,                                               #
+#  Institut National de Recherche en Informatique et en Automatique.  #
+#  Distributed only by permission.                                    #
+#                                                                     #
+#*********************************************************************#
+
+#(* $Id: Makefile.sample,v 1.3 2004/09/24 08:57:38 weis Exp $ *)
+
+# Load required variables defined in Makefile.config
+include /usr/local/lib/ocaml/camlimages/Makefile.config
+
+COMPFLAGS= $(COMPFLAGS_CAMLIMAGES)
+# COMPFLAGS= $(COMPFLAGS_CAMLIMAGES) $(OTHER_COMPFLAGS_YOU_NEED)
+LINKFLAGS= $(COMPFLAGS) $(LINKFLAGS_CAMLIMAGES)
+# LINKFLAGS= $(COMPFLAGS) $(LINKFLAGS_CAMLIMAGES) $(OTHER_LINKFLAGS_YOU_NEED)
+
+all: byt opt
+
+SRCS= sample.ml
+
+clean::
+	rm -f sample sample.byt
+	rm -f sample sample.opt
+
+byt: $(SRCS:.ml=.cmo)
+	$(CAMLC) -o $@ $(LINKFLAGS) $(SRCS:.ml=.cmo)
+
+opt: $(SRCS:.ml=.cmx)
+	$(CAMLOPT) -o $@ $(LINKFLAGS:.cma=.cmxa) $(SRCS:.ml=.cmx)
+
+.SUFFIXES:
+.SUFFIXES: .ml .mli .cmo .cmi .cmx .mll .mly
+
+.ml.cmo:
+	$(CAMLC) -c $(COMPFLAGS) $<
+
+.mli.cmi:
+	$(CAMLC) -c $(COMPFLAGS) $<
+
+.ml.cmx:
+	$(CAMLOPT) -c $(COMPFLAGS) $<
+
+.mll.cmo:
+	$(CAMLLEX) $<
+	$(CAMLC) -c $(COMPFLAGS) $*.ml
+
+.mll.cmx:
+	$(CAMLLEX) $<
+	$(CAMLOPT) -c $(COMPFLAGS) $*.ml
+
+.mly.cmo:
+	$(CAMLYACC) $<
+	$(CAMLC) -c $(COMPFLAGS) $*.mli
+	$(CAMLC) -c $(COMPFLAGS) $*.ml
+
+.mly.cmx:
+	$(CAMLYACC) $<
+	$(CAMLOPT) -c $(COMPFLAGS) $*.mli
+	$(CAMLOPT) -c $(COMPFLAGS) $*.ml
+
+.mly.cmi:
+	$(CAMLYACC) $<
+	$(CAMLC) -c $(COMPFLAGS) $*.mli
+
+.mll.ml:
+	$(CAMLLEX) $<
+
+.mly.ml:
+	$(CAMLYACC) $<
+
+clean::
+	rm -f *.cm[iox] *~ .*~ *.o
+
+depend:
+	$(CAMLDEP) *.mli *.ml > .depend
+
+include .depend

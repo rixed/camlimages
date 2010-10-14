@@ -1,0 +1,21 @@
+#*********************************************************************#
+#                                                                     #
+#                          Caml Images                                #
+#                                                                     #
+#            François Pessaux, projet Cristal, INRIA Rocquencourt     #
+#            Pierre Weis, projet Cristal, INRIA Rocquencourt          #
+#            Jun Furuse, projet Cristal, INRIA Rocquencourt           #
+#                                                                     #
+#  Copyright 1999-2004,                                               #
+#  Institut National de Recherche en Informatique et en Automatique.  #
+#  Distributed only by permission.                                    #
+#                                                                     #
+#*********************************************************************#
+
+#(* $Id: Makefile.fortest,v 1.8 2004/09/29 15:35:55 weis Exp $ *)
+
+include ../Makefile.build
+
+COMPFLAGS_CAMLIMAGES= $(addprefix -I ../, $(BUILDDIRS))
+DLLPATHS= $(addprefix -dllpath ../, $(BUILDDIRS)) 
+LINKFLAGS_CAMLIMAGES= $(addprefix -ccopt -L../, $(BUILDDIRS)) $(WITH_CAMLIMAGES)

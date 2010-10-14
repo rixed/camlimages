@@ -1,0 +1,7 @@
+oTiff.cmo: ../corelib/oImages.cmi tiff.cmi 
+oTiff.cmx: ../corelib/oImages.cmx tiff.cmx 
+tiff.cmo: ../corelib/cmyk32.cmi ../corelib/images.cmi ../corelib/index8.cmi \
+    ../corelib/rgb24.cmi tiff.cmi 
+tiff.cmx: ../corelib/cmyk32.cmx ../corelib/images.cmx ../corelib/index8.cmx \
+    ../corelib/rgb24.cmx tiff.cmi 
+tiff.cmi: ../corelib/images.cmi 

@@ -1,0 +1,113 @@
+#*********************************************************************#
+#                                                                     #
+#                          Caml Images                                #
+#                                                                     #
+#            François Pessaux, projet Cristal, INRIA Rocquencourt     #
+#            Pierre Weis, projet Cristal, INRIA Rocquencourt          #
+#            Jun Furuse, projet Cristal, INRIA Rocquencourt           #
+#                                                                     #
+#  Copyright 1999-2004,                                               #
+#  Institut National de Recherche en Informatique et en Automatique.  #
+#  Distributed only by permission.                                    #
+#                                                                     #
+#*********************************************************************#
+
+#(* $Id: Makefile.config.in,v 1.28 2004/10/02 15:49:05 weis Exp $ *)
+
+PACKAGE=camlimages
+VERSION=@CAMLIMAGES_VERSION@
+
+MV=mv -f
+RM=rm -fR
+CP=cp -pfR
+
+CAMLDIR=@CAMLDIR@
+LIBDIR=@CAMLDIR@/camlimages
+
+CAMLC = @CAML@c@DOTOPT@ @NOLABEL@
+CAMLOPT = @CAML@opt@DOTOPT@ @NOLABEL@
+CAMLC_LABEL = @CAML@c@DOTOPT@ @WITHLABEL@
+CAMLOPT_LABEL = @CAML@opt@DOTOPT@ @WITHLABEL@
+CAMLDEP = @CAML@dep
+CAMLLEX = @CAML@lex@DOTOPT@
+CAMLYACC = @CAML@yacc
+CAMLMKTOP = @CAML@mktop
+CAMLMKLIB = @CAML@mklib
+CUSTOM=-custom
+
+SUPPORTED= @SUPPORTED@
+
+SUPPORT_GIF=@SUPPORT_GIF@
+SUPPORT_PNG=@SUPPORT_PNG@
+SUPPORT_JPEG=@SUPPORT_JPEG@
+SUPPORT_TIFF=@SUPPORT_TIFF@
+SUPPORT_FREETYPE=@SUPPORT_FREETYPE@
+SUPPORT_FREETYPE2=@SUPPORT_FREETYPE2@
+SUPPORT_PS=@SUPPORT_PS@
+SUPPORT_LABLGTK=@SUPPORT_LABLGTK@
+SUPPORT_GDKPIXBUF=@SUPPORT_GDKPIXBUF@
+SUPPORT_LABLGTK2=@SUPPORT_LABLGTK2@
+
+LIBGIF=@LIBGIF@
+LIBBMP=@LIBBMP@
+LIBJPEG=@LIBJPEG@
+LIBTIFF=@LIBTIFF@
+LIBFREETYPE=@LIBFREETYPE@
+LIBPNG=@LIBPNG@
+LIBXVTHUMB=@LIBXVTHUMB@
+LIBXPM=@LIBXPM@
+LIBPPM=@LIBPPM@
+LIBPS=@LIBPS@
+
+CFLAGS=@CFLAGS@
+LDFLAGS=@LDFLAGS@
+X_CFLAGS=@X_CFLAGS@
+
+INCLUDE_FREETYPE=@INCLUDE_FREETYPE@
+
+LABLGTKDIR=@LABLGTKDIR@
+LABLGTK2DIR=@LABLGTK2DIR@
+
+RANLIB=@RANLIB@
+
+LIBPREFIX =	ci_
+
+WITH_UNIX=	unix.cma
+
+WITH_CORELIB  = $(LIBPREFIX)core.cma
+
+WITH_GRAPHICS =	graphics.cma $(LIBPREFIX)graphics.cma
+
+WITH_GIF = 	$(LIBPREFIX)gif.cma
+
+WITH_JPEG =	$(LIBPREFIX)jpeg.cma
+
+WITH_TIFF =	$(LIBPREFIX)tiff.cma
+
+WITH_XPM =	$(LIBPREFIX)xpm.cma
+
+WITH_BMP =	$(LIBPREFIX)bmp.cma
+
+WITH_PPM =	$(LIBPREFIX)ppm.cma
+
+WITH_XVTHUMB=	$(LIBPREFIX)xvthumb.cma
+
+WITH_PNG =	$(LIBPREFIX)png.cma
+
+WITH_PS =	$(LIBPREFIX)ps.cma
+
+WITH_FREETYPE=	$(LIBPREFIX)freetype.cma
+
+WITH_CAMLIMAGES = $(WITH_CORELIB) $(WITH_GRAPHICS) $(WITH_FREETYPE) \
+	$(WITH_GIF) $(WITH_JPEG) $(WITH_TIFF) $(WITH_BMP) $(WITH_PPM) \
+        $(WITH_PNG) $(WITH_XVTHUMB) $(WITH_XPM) $(WITH_PS)
+
+# only lablgtk_img lablgtk2_img is separated from $(WITH_CAMLIMAGES)
+
+WITH_LABLGTKIMAGE = $(LIBPREFIX)lablgtk.cma
+WITH_LABLGTK2IMAGE = $(LIBPREFIX)lablgtk2.cma
+
+######################################
+
+COMPFLAGS_CAMLIMAGES= -I $(LIBDIR)
+LINKFLAGS_CAMLIMAGES= $(addprefix -ccopt \"-L, $(addsuffix\", $(LIBDIR))) $(WITH_CAMLIMAGES)

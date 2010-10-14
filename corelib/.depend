@@ -1,0 +1,55 @@
+bitmap.cmo: camlimages.cmo region.cmi tmpfile.cmi bitmap.cmi 
+bitmap.cmx: camlimages.cmx region.cmx tmpfile.cmx bitmap.cmi 
+blend.cmo: color.cmi blend.cmi 
+blend.cmx: color.cmx blend.cmi 
+cmyk32.cmo: color.cmi genimage.cmi info.cmi cmyk32.cmi 
+cmyk32.cmx: color.cmx genimage.cmx info.cmi cmyk32.cmi 
+color.cmo: camlimages.cmo mstring.cmi color.cmi 
+color.cmx: camlimages.cmx mstring.cmx color.cmi 
+colorhist.cmo: color.cmi oImages.cmi 
+colorhist.cmx: color.cmx oImages.cmx 
+genimage.cmo: bitmap.cmi color.cmi region.cmi genimage.cmi 
+genimage.cmx: bitmap.cmx color.cmx region.cmx genimage.cmi 
+images.cmo: cmyk32.cmi color.cmi index16.cmi index8.cmi info.cmi region.cmi \
+    rgb24.cmi rgba32.cmi images.cmi 
+images.cmx: cmyk32.cmx color.cmx index16.cmx index8.cmx info.cmi region.cmx \
+    rgb24.cmx rgba32.cmx images.cmi 
+index16.cmo: color.cmi genimage.cmi info.cmi rgb24.cmi rgba32.cmi index16.cmi 
+index16.cmx: color.cmx genimage.cmx info.cmi rgb24.cmx rgba32.cmx index16.cmi 
+index8.cmo: color.cmi genimage.cmi info.cmi rgb24.cmi rgba32.cmi index8.cmi 
+index8.cmx: color.cmx genimage.cmx info.cmi rgb24.cmx rgba32.cmx index8.cmi 
+mstring.cmo: mstring.cmi 
+mstring.cmx: mstring.cmi 
+oColor.cmo: color.cmi oColor.cmi 
+oColor.cmx: color.cmx oColor.cmi 
+oImage.cmo: cmyk32.cmi color.cmi images.cmi index16.cmi index8.cmi oColor.cmi \
+    rgb24.cmi rgba32.cmi 
+oImage.cmx: cmyk32.cmx color.cmx images.cmx index16.cmx index8.cmx oColor.cmx \
+    rgb24.cmx rgba32.cmx 
+oImages.cmo: cmyk32.cmi color.cmi images.cmi index16.cmi index8.cmi \
+    oColor.cmi rgb24.cmi rgba32.cmi oImages.cmi 
+oImages.cmx: cmyk32.cmx color.cmx images.cmx index16.cmx index8.cmx \
+    oColor.cmx rgb24.cmx rgba32.cmx oImages.cmi 
+reduce.cmo: color.cmi index8.cmi rgb24.cmi reduce.cmi 
+reduce.cmx: color.cmx index8.cmx rgb24.cmx reduce.cmi 
+region.cmo: region.cmi 
+region.cmx: region.cmi 
+rgb24.cmo: color.cmi genimage.cmi info.cmi rgba32.cmi rgb24.cmi 
+rgb24.cmx: color.cmx genimage.cmx info.cmi rgba32.cmx rgb24.cmi 
+rgba32.cmo: color.cmi genimage.cmi info.cmi rgba32.cmi 
+rgba32.cmx: color.cmx genimage.cmx info.cmi rgba32.cmi 
+tmpfile.cmo: tmpfile.cmi 
+tmpfile.cmx: tmpfile.cmi 
+blend.cmi: color.cmi 
+cmyk32.cmi: color.cmi info.cmi 
+genimage.cmi: color.cmi 
+images.cmi: cmyk32.cmi color.cmi index16.cmi index8.cmi info.cmi rgb24.cmi \
+    rgba32.cmi 
+index16.cmi: color.cmi info.cmi rgb24.cmi rgba32.cmi 
+index8.cmi: color.cmi info.cmi rgb24.cmi rgba32.cmi 
+oColor.cmi: color.cmi 
+oImages.cmi: cmyk32.cmi color.cmi images.cmi index16.cmi index8.cmi info.cmi \
+    oColor.cmi rgb24.cmi rgba32.cmi 
+reduce.cmi: color.cmi index8.cmi rgb24.cmi 
+rgb24.cmi: color.cmi info.cmi rgba32.cmi 
+rgba32.cmi: color.cmi info.cmi 

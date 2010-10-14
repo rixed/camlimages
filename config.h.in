@@ -1,0 +1,8 @@
+#define HAVE_JPEG 0
+#define HAVE_TIFF 0
+#define HAVE_FREETYPE 0
+#define HAVE_FREETYPE2 0
+#define HAVE_GIF 0
+#define GIFLIB_BUG_FIXED 0
+#define HAVE_PNG 0
+#define HAVE_XPM 0
